@@ -1,8 +1,9 @@
 from traceback import format_exc
+from typing import Final
 
 import boto3
 
-client = boto3.client("evidently")
+client: Final = boto3.client("evidently")
 
 
 def delete_project(name: str) -> bool:
@@ -27,8 +28,8 @@ def delete_feature(project: str, feature: str) -> bool:
         return False
 
 
-PROJECT_NAME: str = "ef-vs-bef"
-FEATURE_NAME_BASE: str = "feature-{}"
+PROJECT_NAME: Final[str] = "ef-vs-bef"
+FEATURE_NAME_BASE: Final[str] = "feature-{}"
 
 if __name__ == "__main__":
     for i in range(0, 10):

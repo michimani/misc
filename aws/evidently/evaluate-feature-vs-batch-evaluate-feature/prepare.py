@@ -3,7 +3,7 @@ from typing import Final
 
 import boto3
 
-client = boto3.client("evidently")
+client: Final = boto3.client("evidently")
 
 
 def create_project(name: str) -> bool:
