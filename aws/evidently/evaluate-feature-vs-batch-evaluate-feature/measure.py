@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     print("\n\n---- get {} features by EvaluateFeature API ----".format(len(features)))
     for _ in range(0, 10):
-        get_all_feature_value_by_batch_evaluate_feature(
+        get_all_feature_value_by_evaluate_feature(
             project=PROJECT_NAME, features=features, entity_id=ENTITY_ID
         )
 
@@ -80,6 +80,6 @@ if __name__ == "__main__":
         )
     )
     for _ in range(0, 10):
-        get_all_feature_value_by_evaluate_feature(
+        get_all_feature_value_by_batch_evaluate_feature(
             project=PROJECT_NAME, features=features, entity_id=ENTITY_ID
         )
