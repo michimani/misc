@@ -3,7 +3,7 @@
 from traceback import format_exc
 from typing import Mapping, Optional, Tuple
 
-from botocore.exceptions import BotoCoreError
+from botocore.exceptions import ClientError
 from mypy_boto3_evidently import CloudWatchEvidentlyClient
 from mypy_boto3_evidently.type_defs import (
     CreateFeatureResponseTypeDef,
@@ -24,8 +24,7 @@ def project_exists(client: CloudWatchEvidentlyClient, project_name: str) -> bool
 
     try:
         client.get_project(project=project_name)
-    except BotoCoreError as botocore_error:
-        print(botocore_error)
+    except ClientError:
         return False
     except:  # pylint: disable=W0702
         print(format_exc())
@@ -52,7 +51,7 @@ def create_project(
         response: CreateProjectResponseTypeDef = client.create_project(
             name=project_name, description=project_description
         )
-    except BotoCoreError as botocore_error:
+    except ClientError as botocore_error:
         print(botocore_error)
         return None
     except:  # pylint: disable=W0702
@@ -86,8 +85,9 @@ def create_boolean_feature(
     """
     try:
         entity_override: Mapping[str, str] = {}
-        for entity, variation in override_rules:
-            entity_override[entity] = variation
+        if override_rules is not None:
+            for entity, variation in override_rules:
+                entity_override[entity] = variation
 
         response: CreateFeatureResponseTypeDef = client.create_feature(
             project=project_name,
@@ -100,7 +100,7 @@ def create_boolean_feature(
             defaultVariation=str(default_value),
             entityOverrides=entity_override,
         )
-    except BotoCoreError as botocore_error:
+    except ClientError as botocore_error:
         print(botocore_error)
         return None
     except:  # pylint: disable=W0702

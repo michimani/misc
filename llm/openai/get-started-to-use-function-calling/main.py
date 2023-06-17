@@ -62,7 +62,12 @@ def run_chat(client: ChatCompletion, query: str) -> Optional[str]:
                                 "default": [],
                             },
                         },
-                        "required": ["project_name", "feature_name", "default_value"],
+                        "required": [
+                            "project_name",
+                            "feature_name",
+                            "default_value",
+                            "override_rules",
+                        ],
                     },
                 }
             ],
@@ -89,7 +94,15 @@ def run_chat(client: ChatCompletion, query: str) -> Optional[str]:
         print("Failed to create a feature.")
         return None
 
-    return f"created a feature info\nProject: {params.project_name}\nFeature: {params.feature_name}"
+    return f"""created a feature info
+
+    Project: {params.project_name}
+    Feature: {params.feature_name}
+
+    Check the feature on CloudWatch Evidently using following command:
+
+    aws evidently get-feature --project '{params.project_name}' --feature '{params.feature_name}'
+    """
 
 
 def __generate_calling_function_input(
@@ -105,11 +118,17 @@ def __generate_calling_function_input(
 
     args_for_function = json.loads(openai_message["function_call"]["arguments"])
 
+    override_rules = None
+    if args_for_function.get("override_rules"):
+        override_rules = [
+            tuple(rule) for rule in args_for_function.get("override_rules")
+        ]
+
     params = CreateBooleanFeatureInput(
         project_name=str(args_for_function.get("project_name")),
         feature_name=str(args_for_function.get("feature_name")),
         default_value=str(bool(args_for_function.get("default_value"))),
-        override_rules=list(args_for_function.get("override_rules")),
+        override_rules=override_rules,
     )
 
     return params
@@ -138,5 +157,6 @@ if __name__ == "__main__":
             print("Failed to create a feature.")
             sys.exit(1)
 
+        print("\n-------Response-------")
         print(response_message)
         sys.exit(0)
