@@ -33,9 +33,7 @@ What do you want to create a feature? >
 
 Input a project name, feature name and other information you want to create. For example:
 
-```bash
-I want to create a feature that determines if sushi is served or not. The name of the feature is sushi and the project name is food-project. If entity id is force-sushi, this feature's value will be true.
-```
+> I want to create a feature that determines if sushi is served or not. The name of the feature is sushi and the project name is food-project. If entity id is force-sushi, this feature's value will be true.
 
 ```bash
 -------openai_message-------
