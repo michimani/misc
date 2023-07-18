@@ -42,3 +42,7 @@ def __render(doc: Doc, style: str):
 
 def render_dependencies(doc: Doc):
     __render(doc, "dep")
+
+
+def render_entities(doc: Doc):
+    __render(doc, "ent")

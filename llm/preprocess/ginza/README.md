@@ -117,3 +117,18 @@ ginza ❯ python src/show_token_dependencies.py '頭が赤い魚を食べる猫'
 ```
 
 ![dependencies](./docs/images/token_dependencies_example.jpg)
+
+### Render NER (Named Entity Recognition) of sentence.
+
+```bash
+ginza ❯ python src/show_entities.py '隣の山田くんはポケモンのピカチュウが好きで、お父さんは長野オリンピックの関係者で、新潟県に実家があるらしい。'
+text    label   start   end
+山田    Person  2       4
+くん    Title_Other     4       6
+ポケモン        Character       7       11
+ピカチュウ      Character       12      17
+長野オリンピック        Game    27      35
+新潟県  Province        41      44
+```
+
+![entities](./docs/images/entities_example.jpg)
