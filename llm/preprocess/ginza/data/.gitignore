@@ -1,2 +1,6 @@
-*
 !.gitignore
+
+__html
+train/spacy/*
+train/trained/*
+!.gitkeep

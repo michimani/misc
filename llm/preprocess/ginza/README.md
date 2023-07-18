@@ -11,6 +11,7 @@ Get started to using spaCy with Japanese NLP Library GiNZA.
     - [Split text to sentences and *bunsetu*.](#split-text-to-sentences-and-bunsetu)
     - [Render tokens dependencies.](#render-tokens-dependencies)
     - [Render NER (Named Entity Recognition) of sentence.](#render-ner-named-entity-recognition-of-sentence)
+    - [Create trained model.](#create-trained-model)
 
 ## Installation
 
@@ -138,3 +139,16 @@ text    label   start   end
 ```
 
 ![entities](./docs/images/entities_example.jpg)
+
+### Create trained model.
+
+```bash
+ginza ❯ python src/train_ner.py data/train/raw/test_data.json
+```
+
+Compare base model and trained model.
+
+```bash
+python src/compare_with_trained.py '山田くんはディープインパクトが好きでした。' path/to/trained-model/model-last
+```
+

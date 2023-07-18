@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing import Iterable
+from typing import Iterable, Optional
 
 from spacy import displacy
 from spacy import load as spacy_load
@@ -9,7 +9,7 @@ from spacy.tokens import Span
 from ginza import bunsetu_spans, set_split_mode
 from utils.display import render_html
 
-nlp: Language = spacy_load("ja_ginza")
+default_nlp: Language = spacy_load("ja_ginza")
 
 
 class SplitMode(StrEnum):
@@ -22,11 +22,15 @@ def __tokenize(nlp: Language, text: str) -> Doc:
     return nlp(text)
 
 
-def simple_tokenize(text: str) -> Doc:
+def simple_tokenize(text: str, custom_nlp: Optional[Language] = None) -> Doc:
+    nlp = default_nlp if custom_nlp is None else custom_nlp
     return __tokenize(nlp, text)
 
 
-def split_with_mode(text: str, split_mode: SplitMode) -> Doc:
+def split_with_mode(
+    text: str, split_mode: SplitMode, custom_nlp: Optional[Language] = None
+) -> Doc:
+    nlp = default_nlp if custom_nlp is None else custom_nlp
     set_split_mode(nlp, split_mode.value)
     return __tokenize(nlp, text)
 
