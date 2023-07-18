@@ -3,8 +3,14 @@ ginza
 
 Get started to using spaCy with Japanese NLP Library GiNZA.
 
-- [spaCy · Industrial-strength Natural Language Processing in Python](https://spacy.io/)
-- [GiNZA - Japanese NLP Library | Universal Dependenciesに基づくオープンソース日本語NLPライブラリ](https://megagonlabs.github.io/ginza/)
+- [ginza](#ginza)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Simple tokenize.](#simple-tokenize)
+    - [Split text to tokens with some rules.](#split-text-to-tokens-with-some-rules)
+    - [Split text to sentences and *bunsetu*.](#split-text-to-sentences-and-bunsetu)
+    - [Render tokens dependencies.](#render-tokens-dependencies)
+    - [Render NER (Named Entity Recognition) of sentence.](#render-ner-named-entity-recognition-of-sentence)
 
 ## Installation
 
