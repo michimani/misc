@@ -32,41 +32,46 @@ ginza ❯ python src/simple_tokenize.py "私はソフトウェアエンジニア
 ### Split text with some rules.
 
 ```bash
-ginza ❯ python src/split_text.py '10と24の最大公約数は2です。' 
- 
+ginza ❯ python src/split_text.py '10と24の最大公約数は2です。'
 ---- SplitType: A ----
-10
-と
-24
-の
-最大
-公約
-数
-は
-2
-です
-。
+text    tag           pos
+------  ------------  -----
+10      名詞-数詞         NUM
+と       助詞-格助詞        ADP
+24      名詞-数詞         NUM
+の       助詞-格助詞        ADP
+最大      名詞-普通名詞-一般    NOUN
+公約      名詞-普通名詞-サ変可能  NOUN
+数       名詞-普通名詞-一般    NOUN
+は       助詞-係助詞        ADP
+2       名詞-数詞         NUM
+です      助動詞           AUX
+。       補助記号-句点       PUNCT
 
 ---- SplitType: B ----
-10
-と
-24
-の
-最大
-公約数
-は
-2
-です
-。
+text    tag         pos
+------  ----------  -----
+10      名詞-数詞       NUM
+と       助詞-格助詞      ADP
+24      名詞-数詞       NUM
+の       助詞-格助詞      ADP
+最大      名詞-普通名詞-一般  NOUN
+公約数     名詞-普通名詞-一般  NOUN
+は       助詞-係助詞      ADP
+2       名詞-数詞       NUM
+です      助動詞         AUX
+。       補助記号-句点     PUNCT
 
 ---- SplitType: C ----
-10
-と
-24
-の
-最大公約数
-は
-2
-です
-。
+text    tag         pos
+------  ----------  -----
+10      名詞-数詞       NUM
+と       助詞-格助詞      ADP
+24      名詞-数詞       NUM
+の       助詞-格助詞      ADP
+最大公約数   名詞-普通名詞-一般  NOUN
+は       助詞-係助詞      ADP
+2       名詞-数詞       NUM
+です      助動詞         AUX
+。       補助記号-句点     PUNCT
 ```
