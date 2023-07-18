@@ -109,3 +109,11 @@ ginza ❯ python src/split_to_sentences.py '私は国家公務員です。銀座
         '秘密です。' 
                 '秘密' 'です' '。'
 ```
+
+### Render tokens dependencies.
+
+```bash
+ginza ❯ python src/show_token_dependencies.py '頭が赤い魚を食べる猫' 
+```
+
+![dependencies](./docs/images/token_dependencies_example.jpg)
