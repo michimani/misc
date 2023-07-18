@@ -29,10 +29,10 @@ ginza ❯ python src/simple_tokenize.py "私はソフトウェアエンジニア
 です
 ```
 
-### Split text with some rules.
+### Split text to tokens with some rules.
 
 ```bash
-ginza ❯ python src/split_text.py '私は国家公務員と銀座にご飯を食べに行きます。'  
+ginza ❯ python src/split_to_tokens.py '私は国家公務員と銀座にご飯を食べに行きます。'  
 ---- SplitMode: A ----
 text    tag     pos     lemma
 私      代名詞  PRON    私
