@@ -17,7 +17,7 @@ python3 -m venv .venv \
 
 ## Usage
 
-Simple tokenize.
+### Simple tokenize.
 
 ```bash
 ginza ❯ python src/simple_tokenize.py "私はソフトウェアエンジニアです"
@@ -29,3 +29,44 @@ ginza ❯ python src/simple_tokenize.py "私はソフトウェアエンジニア
 です
 ```
 
+### Split text with some rules.
+
+```bash
+ginza ❯ python src/split_text.py '10と24の最大公約数は2です。' 
+ 
+---- SplitType: A ----
+10
+と
+24
+の
+最大
+公約
+数
+は
+2
+です
+。
+
+---- SplitType: B ----
+10
+と
+24
+の
+最大
+公約数
+は
+2
+です
+。
+
+---- SplitType: C ----
+10
+と
+24
+の
+最大公約数
+は
+2
+です
+。
+```
