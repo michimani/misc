@@ -32,46 +32,55 @@ ginza ❯ python src/simple_tokenize.py "私はソフトウェアエンジニア
 ### Split text with some rules.
 
 ```bash
-ginza ❯ python src/split_text.py '10と24の最大公約数は2です。'
----- SplitType: A ----
-text    tag           pos
-------  ------------  -----
-10      名詞-数詞         NUM
-と       助詞-格助詞        ADP
-24      名詞-数詞         NUM
-の       助詞-格助詞        ADP
-最大      名詞-普通名詞-一般    NOUN
-公約      名詞-普通名詞-サ変可能  NOUN
-数       名詞-普通名詞-一般    NOUN
-は       助詞-係助詞        ADP
-2       名詞-数詞         NUM
-です      助動詞           AUX
-。       補助記号-句点       PUNCT
+ginza ❯ python src/split_text.py '私は国家公務員と銀座にご飯を食べに行きます。'  
+---- SplitMode: A ----
+text    tag     pos     lemma
+私      代名詞  PRON    私
+は      助詞-係助詞     ADP     は
+国家    名詞-普通名詞-一般      NOUN    国家
+公務    名詞-普通名詞-一般      NOUN    公務
+員      接尾辞-名詞的-一般      NOUN    員
+と      助詞-格助詞     ADP     と
+銀座    名詞-固有名詞-地名-一般 PROPN   銀座
+に      助詞-格助詞     ADP     に
+ご飯    名詞-普通名詞-一般      NOUN    ご飯
+を      助詞-格助詞     ADP     を
+食べ    動詞-一般       VERB    食べる
+に      助詞-格助詞     ADP     に
+行き    動詞-非自立可能 VERB    行く
+ます    助動詞  AUX     ます
+。      補助記号-句点   PUNCT   。
 
----- SplitType: B ----
-text    tag         pos
-------  ----------  -----
-10      名詞-数詞       NUM
-と       助詞-格助詞      ADP
-24      名詞-数詞       NUM
-の       助詞-格助詞      ADP
-最大      名詞-普通名詞-一般  NOUN
-公約数     名詞-普通名詞-一般  NOUN
-は       助詞-係助詞      ADP
-2       名詞-数詞       NUM
-です      助動詞         AUX
-。       補助記号-句点     PUNCT
+---- SplitMode: B ----
+text    tag     pos     lemma
+私      代名詞  PRON    私
+は      助詞-係助詞     ADP     は
+国家    名詞-普通名詞-一般      NOUN    国家
+公務員  名詞-普通名詞-一般      NOUN    公務員
+と      助詞-格助詞     ADP     と
+銀座    名詞-固有名詞-地名-一般 PROPN   銀座
+に      助詞-格助詞     ADP     に
+ご飯    名詞-普通名詞-一般      NOUN    ご飯
+を      助詞-格助詞     ADP     を
+食べ    動詞-一般       VERB    食べる
+に      助詞-格助詞     ADP     に
+行き    動詞-非自立可能 VERB    行く
+ます    助動詞  AUX     ます
+。      補助記号-句点   PUNCT   。
 
----- SplitType: C ----
-text    tag         pos
-------  ----------  -----
-10      名詞-数詞       NUM
-と       助詞-格助詞      ADP
-24      名詞-数詞       NUM
-の       助詞-格助詞      ADP
-最大公約数   名詞-普通名詞-一般  NOUN
-は       助詞-係助詞      ADP
-2       名詞-数詞       NUM
-です      助動詞         AUX
-。       補助記号-句点     PUNCT
+---- SplitMode: C ----
+text    tag     pos     lemma
+私      代名詞  PRON    私
+は      助詞-係助詞     ADP     は
+国家公務員      名詞-普通名詞-一般      NOUN    国家公務員
+と      助詞-格助詞     ADP     と
+銀座    名詞-固有名詞-地名-一般 PROPN   銀座
+に      助詞-格助詞     ADP     に
+ご飯    名詞-普通名詞-一般      NOUN    ご飯
+を      助詞-格助詞     ADP     を
+食べ    動詞-一般       VERB    食べる
+に      助詞-格助詞     ADP     に
+行き    動詞-非自立可能 VERB    行く
+ます    助動詞  AUX     ます
+。      補助記号-句点   PUNCT   。
 ```

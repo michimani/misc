@@ -1,18 +1,14 @@
 import sys
 
-from tabulate import tabulate
-
 from utils.nlp import SplitMode, split_with_mode
 
 
 def split_text(text: str, split_mode: SplitMode):
     doc = split_with_mode(text, split_mode)
 
-    table = []
+    print("text\ttag\tpos\tlemma")
     for token in doc:
-        table.append([token.text, token.tag_, token.pos_])
-
-    print(tabulate(table, headers=["text", "tag", "pos"]))
+        print(f"{token.text}\t{token.tag_}\t{token.pos_}\t{token.lemma_}")
 
 
 if __name__ == "__main__":
