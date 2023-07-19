@@ -10,6 +10,8 @@ misc
 
 - Get started to use function calling on OpenAI ChatCompletion API.
   - [get-started-to-use-function-calling](./llm/openai/get-started-to-use-function-calling)
+- Get started to use spaCy with Japanese NLP library GiNZA.
+  - [spacy-with-ginza](./llm/preprocess/spacy_with_ginza)
 
 # License
 
