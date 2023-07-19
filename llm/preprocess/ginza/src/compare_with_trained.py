@@ -1,6 +1,7 @@
 import sys
 from typing import Optional
 
+from spacy import blank as spacy_blank
 from spacy import load as spacy_load
 from spacy.language import Language
 
@@ -23,10 +24,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     text = args[1]
+    blank_nlp = spacy_blank("ja")
     trained_nlp = spacy_load(args[2])
 
-    print("--- default nlp ('ja_ginza') ---")
-    ner(text, None)
+    print("--- default nlp ('blank(\"ja\")') ---")
+    ner(text, blank_nlp)
 
     print()
     print("--- trained nlp ---")

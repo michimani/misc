@@ -150,5 +150,12 @@ Compare base model and trained model.
 
 ```bash
 python src/compare_with_trained.py '山田くんはディープインパクトが好きでした。' path/to/trained-model/model-last
+
+--- default nlp ('blank("ja")') ---
+text    label   start   end
+
+--- trained nlp ---
+text    label   start   end
+ディープインパクト      RACEHORCE       5       14
 ```
 
