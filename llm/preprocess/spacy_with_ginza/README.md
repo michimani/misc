@@ -1,9 +1,12 @@
-ginza
+spaCy with GiNZA
 ===
 
 Get started to using spaCy with Japanese NLP Library GiNZA.
 
-- [ginza](#ginza)
+- spaCy: `3.4.4`
+- GiNZA: `5.1.2`
+
+- [spaCy with GiNZA](#spacy-with-ginza)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Simple tokenize.](#simple-tokenize)
