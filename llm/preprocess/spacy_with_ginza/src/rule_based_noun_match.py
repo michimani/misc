@@ -1,6 +1,6 @@
-import spacy
 import sys
 
+import spacy
 from spacy.matcher import Matcher
 
 nlp = spacy.load("ja_ginza")
