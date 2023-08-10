@@ -164,6 +164,7 @@ text    label   start   end
 
 ### Rule based matching.
 
+[Matcher · spaCy API Documentation](https://spacy.io/api/matcher)
 
 #### Find nouns
 
@@ -172,4 +173,17 @@ python src/rule_based_noun_match.py '私は話すことが好きだが、長い�
 
 Matched: 話 at 10:11 (9664970447662506965)
 Matched: 話 at 21:22 (9664970447662506965)
+```
+
+#### Extract nsubj, acl, amod, ROOT and obj
+
+```bash
+python src/rule_based_nro_match.py '私は辛いカレーを作った。兄は美味しいカレーを食べた。弟は汚い皿を洗った。'
+
+Matched: 私は辛いカレーを作っ at 0:6 (9664970447662506965)
+         私 : 作る: 辛い : カレー
+Matched: 兄は美味しいカレーを食べ at 0:6 (9664970447662506965)
+         兄 : 食べる: 美味しい : カレー
+Matched: 弟は汚い皿を洗っ at 0:6 (9664970447662506965)
+         弟 : 洗う: 汚い : 皿
 ```
