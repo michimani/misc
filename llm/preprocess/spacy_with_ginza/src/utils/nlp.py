@@ -1,12 +1,12 @@
 from enum import StrEnum
 from typing import Iterable, Optional
 
+from ginza import bunsetu_spans, set_split_mode
 from spacy import displacy
 from spacy import load as spacy_load
 from spacy.language import Doc, Language
 from spacy.tokens import Span
 
-from ginza import bunsetu_spans, set_split_mode
 from utils.display import render_html
 
 default_nlp: Language = spacy_load("ja_ginza")

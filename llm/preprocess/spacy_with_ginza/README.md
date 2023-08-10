@@ -30,7 +30,7 @@ python3 -m venv .venv \
 ### Simple tokenize.
 
 ```bash
-ginza ❯ python src/simple_tokenize.py "私はソフトウェアエンジニアです"
+python src/simple_tokenize.py "私はソフトウェアエンジニアです"
 
 私
 は
@@ -42,7 +42,7 @@ ginza ❯ python src/simple_tokenize.py "私はソフトウェアエンジニア
 ### Split text to tokens with some rules.
 
 ```bash
-ginza ❯ python src/split_to_tokens.py '私は国家公務員と銀座にご飯を食べに行きます。'  
+python src/split_to_tokens.py '私は国家公務員と銀座にご飯を食べに行きます。'  
 ---- SplitMode: A ----
 text    tag     pos     lemma
 私      代名詞  PRON    私
@@ -98,7 +98,7 @@ text    tag     pos     lemma
 ### Split text to sentences and *bunsetu*.
 
 ```bash
-ginza ❯ python src/split_to_sentences.py '私は国家公務員です。銀座でご飯を食べます。好きなお店は秘密です。'
+python src/split_to_sentences.py '私は国家公務員です。銀座でご飯を食べます。好きなお店は秘密です。'
 私は国家公務員です。
         '私は' 
                 '私' 'は' 
@@ -123,7 +123,7 @@ ginza ❯ python src/split_to_sentences.py '私は国家公務員です。銀座
 ### Render tokens dependencies.
 
 ```bash
-ginza ❯ python src/show_token_dependencies.py '頭が赤い魚を食べる猫' 
+python src/show_token_dependencies.py '頭が赤い魚を食べる猫' 
 ```
 
 ![dependencies](./docs/images/token_dependencies_example.jpg)
@@ -131,7 +131,7 @@ ginza ❯ python src/show_token_dependencies.py '頭が赤い魚を食べる猫'
 ### Render NER (Named Entity Recognition) of sentence.
 
 ```bash
-ginza ❯ python src/show_entities.py '隣の山田くんはポケモンのピカチュウが好きで、お父さんは長野オリンピックの関係者で、新潟県に実家があるらしい。'
+python src/show_entities.py '隣の山田くんはポケモンのピカチュウが好きで、お父さんは長野オリンピックの関係者で、新潟県に実家があるらしい。'
 text    label   start   end
 山田    Person  2       4
 くん    Title_Other     4       6
@@ -146,7 +146,7 @@ text    label   start   end
 ### Create trained model.
 
 ```bash
-ginza ❯ python src/train_ner.py data/train/raw/test_data.json
+python src/train_ner.py data/train/raw/test_data.json
 ```
 
 Compare base model and trained model.
@@ -162,3 +162,28 @@ text    label   start   end
 ディープインパクト      RACEHORCE       5       14
 ```
 
+### Rule based matching.
+
+[Matcher · spaCy API Documentation](https://spacy.io/api/matcher)
+
+#### Find nouns
+
+```bash
+python src/rule_based_noun_match.py '私は話すことが好きだが、長い話を聞くのは嫌いです。ただ、面白い話であれば長くても良いです。' '話'
+
+Matched: 話 at 10:11 (9664970447662506965)
+Matched: 話 at 21:22 (9664970447662506965)
+```
+
+#### Extract nsubj, acl, amod, ROOT and obj
+
+```bash
+python src/rule_based_nro_match.py '私は辛いカレーを作った。兄は美味しいカレーを食べた。弟は汚い皿を洗った。'
+
+Matched: 私は辛いカレーを作っ at 0:6 (9664970447662506965)
+         私 : 作る: 辛い : カレー
+Matched: 兄は美味しいカレーを食べ at 0:6 (9664970447662506965)
+         兄 : 食べる: 美味しい : カレー
+Matched: 弟は汚い皿を洗っ at 0:6 (9664970447662506965)
+         弟 : 洗う: 汚い : 皿
+```
