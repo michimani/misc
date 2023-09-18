@@ -2,9 +2,15 @@ import { useState } from 'react'
 import './App.css'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import {add} from './libs/Math'
 
 function App() {
   const [count, setCount] = useState(0)
+
+  const clickHandler = () => {
+    const n = add(count, 1)
+    setCount(n)
+  }
 
   return (
     <>
@@ -18,7 +24,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={clickHandler}>
           count is {count}
         </button>
         <p>
