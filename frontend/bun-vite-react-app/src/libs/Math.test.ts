@@ -1,4 +1,4 @@
-import { expect, describe, test } from 'vitest'
+import { expect, describe, test } from 'bun:test'
 import { add } from './Math'
 
 describe('test for Math.add', () => {
