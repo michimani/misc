@@ -8,6 +8,7 @@ isort==5.12.0
 jmespath==1.0.1
 mypy==1.5.1
 mypy-boto3-bedrock==1.28.57
+mypy-boto3-bedrock-runtime==1.28.57
 mypy-extensions==1.0.0
 packaging==23.1
 pathspec==0.11.2
