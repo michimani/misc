@@ -1,4 +1,4 @@
-Comparison of embedding with Amazon Titan and OpenAI ada
+Comparison of embedding with Amazon Titan and OpenAI Ada
 ===
 
 # Preparing

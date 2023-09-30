@@ -1,7 +1,7 @@
 import sys
 
 from bedrock import BedrockEmbeddingClient
-from calc import distance
+from calc import distance, similarity
 from embedding import create_embedding, debug_embedding
 from oa import OpenAIEmbeddingClient
 
@@ -24,5 +24,7 @@ if __name__ == "__main__":
     debug_embedding(titan_embd)
 
     d = distance(ada_embd, titan_embd)
-
     print(f"\nDistance: {d}")
+
+    s = similarity(ada_embd, titan_embd)
+    print(f"\nSimilarity: {s}")
