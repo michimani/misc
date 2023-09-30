@@ -20,6 +20,8 @@ misc
   - [get-started-to-use-function-calling](./llm/openai/get-started-to-use-function-calling)
 - Get started to use spaCy with Japanese NLP library GiNZA.
   - [spacy-with-ginza](./llm/preprocess/spacy_with_ginza)
+- Comparison for embedding Amazon Titan with OpenAI Ada
+  - [comparison-for-embedding](./llm/embedding/compare-titan-ada)
 
 # License
 
