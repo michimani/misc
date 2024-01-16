@@ -1,0 +1,5 @@
+.terraform
+*.tfstate*
+
+# Why: This is a example repository for the Terraform and OpenTofu.
+.terraform.lock.hcl
