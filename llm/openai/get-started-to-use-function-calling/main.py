@@ -1,22 +1,22 @@
 import json
 import sys
+from os import environ
 from traceback import format_exc
 from typing import Final, Optional
 
-import openai
-from openai import ChatCompletion
-from openai.error import InvalidRequestError
+from openai import BadRequestError, OpenAI
+from openai.types.chat.chat_completion_message import ChatCompletionMessage
 
 from function import CreateBooleanFeatureInput, create_evidently_boolean_feature
 
 CHAT_MODEL_GPT35T_0613: Final[str] = "gpt-3.5-turbo-0613"
 
 
-def run_chat(client: ChatCompletion, query: str) -> Optional[str]:
+def run_chat(client: OpenAI, query: str) -> Optional[str]:
     """Run chat with GPT-3-turbo-0613 model to create Evidently Feature.
 
     Args:
-        client (ChatCompletion): OpenAI ChatCompletion client.
+        client (OpenAI): OpenAI client.
         query (str): User query.
 
     Returns:
@@ -24,7 +24,7 @@ def run_chat(client: ChatCompletion, query: str) -> Optional[str]:
     """
 
     try:
-        response = client.create(
+        response = client.chat.completions.create(
             model=CHAT_MODEL_GPT35T_0613,
             messages=[{"role": "user", "content": query}],
             functions=[
@@ -73,7 +73,7 @@ def run_chat(client: ChatCompletion, query: str) -> Optional[str]:
             ],
             function_call="auto",
         )
-    except InvalidRequestError as ire:
+    except BadRequestError as ire:
         print(ire.__repr__())
         return None
     except:  # pylint: disable=W0702
@@ -81,7 +81,7 @@ def run_chat(client: ChatCompletion, query: str) -> Optional[str]:
         return None
 
     params: CreateBooleanFeatureInput = __generate_calling_function_input(
-        response.choices[0]["message"]
+        response.choices[0].message
     )
     if params is None:
         print("Failed to create parameters for calling function.")
@@ -106,17 +106,17 @@ def run_chat(client: ChatCompletion, query: str) -> Optional[str]:
 
 
 def __generate_calling_function_input(
-    openai_message: dict,
+    completion_message: ChatCompletionMessage,
 ) -> Optional[CreateBooleanFeatureInput]:
-    __debug("openai_message", openai_message)
+    __debug("completion_message", completion_message)
 
-    if openai_message.get("function_call") is None:
+    if completion_message.function_call is None:
         print("No function call.")
         return None
 
-    print(f"function_call: {openai_message['function_call']['name']}")
+    print(f"function_call: {completion_message.function_call.name}")
 
-    args_for_function = json.loads(openai_message["function_call"]["arguments"])
+    args_for_function = json.loads(completion_message.function_call.arguments)
 
     override_rules = None
     if args_for_function.get("override_rules"):
@@ -140,6 +140,11 @@ def __debug(name: str, value: any):
     print("--------------------")
 
 
+openai_client: Final[OpenAI] = OpenAI(
+    api_key=environ.get("OPENAI_API_KEY", ""),
+    organization=environ.get("OPENAI_ORGANIZATION_ID=", ""),
+)
+
 if __name__ == "__main__":
     message: str = ""
     while len(message) == 0:
@@ -149,7 +154,7 @@ if __name__ == "__main__":
             continue
 
         response_message = run_chat(
-            client=openai.ChatCompletion,
+            client=openai_client,
             query=message,
         )
 
