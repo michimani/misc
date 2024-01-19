@@ -12,5 +12,5 @@ This is a simple example of how to use mock provider to test terraform code.
 - Run module test
 
 ```bash
-make tftest-mod
+make tftest
 ```
