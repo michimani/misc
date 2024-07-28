@@ -4,5 +4,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    develop:
+      watch:
+        - path: ./backend
+          action: rebuild
     ports:
       - "8080:8080"
