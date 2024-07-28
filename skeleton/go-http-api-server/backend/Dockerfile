@@ -1,5 +1,7 @@
+ARG GO_VERSION=1.22.5
+
 # Build stage
-FROM golang:1.22.4-bullseye AS builder
+FROM golang:${GO_VERSION}-bookworm AS builder
 
 WORKDIR /app
 
@@ -12,12 +14,11 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o /app/backend ./cmd/backend/...
 
 # Runtime stage
-FROM alpine:3.20.1
+FROM debian:bookworm-slim AS final
 
 WORKDIR /app
 
 COPY --from=builder /app/backend .
-RUN chmod +x /app/backend
 
 EXPOSE 8080
 
