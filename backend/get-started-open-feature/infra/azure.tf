@@ -32,49 +32,6 @@ resource "azurerm_app_configuration_feature" "feature" {
   ]
 }
 
-# resource "azurerm_app_configuration_key" "feature" {
-#   configuration_store_id = azurerm_app_configuration.main.id
-#   key                    = ".appconfig.featureflag/${local.feature_name}"
-#   label                  = "enabled"
-#   # value = jsonencode({
-#   #   "id"          = "${local.feature_name}",
-#   #   "description" = "example feature",
-#   #   "enabled"     = true,
-#   #   "conditions" = { client_filters = [{
-#   #     "name" = "specified user",
-#   #     "parameters" = {
-#   #       "user_id" = "user-1"
-#   #     }
-#   #     }]
-#   #   }
-#   # })
-#   value = jsonencode({
-#     "id" : "${local.feature_name}",
-#     "description" : "example feature",
-#     "enabled" : true,
-#     "conditions" : {
-#       "client_filters" : [
-#         {
-#           "name" : "Microsoft.Targeting",
-#           "parameters" : {
-#             "Audience" : {
-#               "Users" : [
-#                 "user-1"
-#               ],
-#               "DefaultRolloutPercentage" : 0,
-#             }
-#           }
-#         }
-#       ]
-#     }
-#   }, )
-#   content_type = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
-
-#   depends_on = [
-#     azurerm_role_assignment.appconfig_dataowner,
-#   ]
-# }
-
 output "app_config_endpoint" {
   value = azurerm_app_configuration.main.endpoint
 }
