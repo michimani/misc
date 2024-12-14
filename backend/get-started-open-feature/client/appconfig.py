@@ -8,13 +8,14 @@ from azure.identity import DefaultAzureCredential
 from featuremanagement import FeatureManager, TargetingContext
 from openfeature.client import (
     EvaluationContext,
-    FlagEvaluationDetails,
-    FlagEvaluationOptions,
     Hook,
-    OpenFeatureClient,
 )
 from openfeature.exception import ErrorCode
-from openfeature.flag_evaluation import FlagResolutionDetails, FlagType, Reason
+from openfeature.flag_evaluation import (
+    FlagResolutionDetails,
+    FlagType,
+    Reason,
+)
 from openfeature.provider import AbstractProvider, Metadata
 
 
@@ -24,48 +25,9 @@ class Config:
         self.credential = credential
 
 
-class AppConfigurationClient(OpenFeatureClient):
-    def __init__(self, config: Config):
-        self.endpoint = config.endpoint
-        self.credential = config.credential
-
-    def get_boolean_value(
-        self,
-        flag_key: str,
-        default_value: bool,
-        evaluation_context: EvaluationContext | None,
-        flag_evaluation_options: FlagEvaluationOptions | None,
-    ) -> bool:
-        return self.get_boolean_details(
-            flag_key,
-            default_value,
-            evaluation_context,
-            flag_evaluation_options,
-        ).value
-
-    def get_boolean_details(
-        self,
-        flag_key: str,
-        default_value: bool,
-        evaluation_context: EvaluationContext | None,
-        flag_evaluation_options: FlagEvaluationOptions | None,
-    ) -> FlagEvaluationDetails[bool]:
-        return self.evaluate_flag_details(
-            FlagType.BOOLEAN,
-            flag_key,
-            default_value,
-            evaluation_context,
-            flag_evaluation_options,
-        )
-
-
 class AppConfigurationProvider(AbstractProvider):
     def __init__(self, config: Config):
         self.config = config
-
-    @property
-    def client(self) -> AppConfigurationClient:
-        return AppConfigurationClient()
 
     def get_metadata(self) -> Metadata:
         return Metadata("azure-app-configuration-server")
