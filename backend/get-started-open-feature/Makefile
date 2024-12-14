@@ -7,5 +7,5 @@ clean:
 	cd client && uv clean
 
 evaluate-feature:
-	cd client \
+	@cd client \
 	&& make run ARGS="$(ARGS)"

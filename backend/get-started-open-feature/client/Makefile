@@ -3,7 +3,7 @@ init:
 	cp .env.example .env
 
 run:
-	set -a \
+	@set -a \
 	&& source .env \
 	&& set +a \
 	&& uv run main.py $(ARGS)
