@@ -1,5 +1,4 @@
 import sys
-from os import environ
 from pprint import pprint as pp
 
 from openfeature import api
@@ -7,7 +6,6 @@ from openfeature.client import OpenFeatureClient
 from openfeature.evaluation_context import EvaluationContext
 
 import appconfig as ac
-import launchdarkly as ld
 
 FEATURE_NAME: str = "is_sushi"
 
