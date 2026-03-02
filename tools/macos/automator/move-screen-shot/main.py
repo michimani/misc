@@ -3,7 +3,7 @@ import os
 import re
 
 FILE_TYPE = 'png'
-NEW_FILE_PATTERN = r'.*(\d{4})-(\d{2})-(\d{2})_\d{5,6}([^\/]+)?\.' + FILE_TYPE
+NEW_FILE_PATTERN = r'.*(\d{4})-(\d{2})-(\d{2})_(?:at_)?\d{5,6}([^\/]+)?\.' + FILE_TYPE
 SC_DIR = '/Users/michimani/Pictures/__ss_tmp'
 SC_OUT_DIR = '/Users/michimani/Pictures/ScreenShots'
 
