@@ -1,0 +1,18 @@
+{
+  "name": "s3-presigned-url",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "runServices": ["floci", "bucket-setup", "backend", "frontend", "workspace"],
+  "forwardPorts": ["floci:4566", "backend:8080"],
+  "portsAttributes": {
+    "floci:4566": { "label": "floci (S3 emulator)" },
+    "backend:8080": { "label": "backend API" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["golang.go", "dbaeumer.vscode-eslint"]
+    }
+  }
+}
