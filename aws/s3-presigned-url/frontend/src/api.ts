@@ -13,7 +13,7 @@ export interface CommitFileInput {
 export interface CommitResult {
   uuid: string;
   fileName: string;
-  status: "committed" | "not_found" | "error";
+  status: "committed" | "not_found" | "invalid_file_type" | "error";
 }
 
 export interface CommitResponse {

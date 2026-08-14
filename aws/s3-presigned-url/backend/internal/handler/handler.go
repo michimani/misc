@@ -1,8 +1,12 @@
 package handler
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -20,6 +24,9 @@ import (
 )
 
 const presignExpiry = 15 * time.Minute
+
+// pdfMagicNumber is the byte sequence every PDF file starts with.
+var pdfMagicNumber = []byte("%PDF-")
 
 type Handler struct {
 	s3  *s3client.Clients
@@ -112,10 +119,27 @@ func (h *Handler) Commit(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		isPDF, err := h.isTmpObjectPDF(r.Context(), f.UUID)
+		if err != nil {
+			if isNotFound(err) {
+				result.Status = "not_found"
+			} else {
+				log.Printf("magic number check failed for uuid %s: %v", f.UUID, err)
+				result.Status = "error"
+			}
+			results = append(results, result)
+			continue
+		}
+		if !isPDF {
+			result.Status = "invalid_file_type"
+			results = append(results, result)
+			continue
+		}
+
 		destKey := f.UUID + "/" + f.FileName
 		copySource := h.cfg.TmpBucket + "/" + url.PathEscape(f.UUID)
 
-		_, err := h.s3.Internal.CopyObject(r.Context(), &s3.CopyObjectInput{
+		_, err = h.s3.Internal.CopyObject(r.Context(), &s3.CopyObjectInput{
 			Bucket:     aws.String(h.cfg.StoreBucket),
 			Key:        aws.String(destKey),
 			CopySource: aws.String(copySource),
@@ -143,6 +167,29 @@ func (h *Handler) Commit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusOK, commitResponse{Results: results})
+}
+
+// isTmpObjectPDF checks the file type by reading only the leading bytes of
+// the tmp object via a ranged GetObject, instead of buffering the whole
+// (potentially large) file into memory just to inspect its magic number.
+func (h *Handler) isTmpObjectPDF(ctx context.Context, objectUUID string) (bool, error) {
+	out, err := h.s3.Internal.GetObject(ctx, &s3.GetObjectInput{
+		Bucket: aws.String(h.cfg.TmpBucket),
+		Key:    aws.String(objectUUID),
+		Range:  aws.String(fmt.Sprintf("bytes=0-%d", len(pdfMagicNumber)-1)),
+	})
+	if err != nil {
+		return false, err
+	}
+	defer out.Body.Close()
+
+	head := make([]byte, len(pdfMagicNumber))
+	n, err := io.ReadFull(out.Body, head)
+	if err != nil && !errors.Is(err, io.ErrUnexpectedEOF) && !errors.Is(err, io.EOF) {
+		return false, err
+	}
+
+	return bytes.Equal(head[:n], pdfMagicNumber), nil
 }
 
 func isNotFound(err error) bool {

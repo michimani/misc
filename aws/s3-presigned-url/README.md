@@ -63,8 +63,10 @@ docker compose up --build
 | Method | Path | 概要 |
 | --- | --- | --- |
 | POST | `/api/prepare` | 一時バケットの `/{uuid}` に対するアップロード用 Pre-signed URL (PUT, 15分) を発行 |
-| POST | `/api/commit` | uuid ごとに一時バケット→登録済みバケットへ Copy し、成功したものは一時バケットから Delete (=move) |
+| POST | `/api/commit` | uuid ごとに PDF かどうかを検証したうえで一時バケット→登録済みバケットへ Copy し、成功したものは一時バケットから Delete (=move) |
 | GET | `/api/file-list` | 登録済みバケットの一覧と、各ファイルのダウンロード用 Pre-signed URL (GET, 15分) を返す |
+
+`commit` はファイル種別を PDF に限定している。判定はファイル全体を読み込まず、一時バケットのオブジェクトに対して `Range: bytes=0-4` を指定した `GetObject` でマジックナンバー (`%PDF-`) の 5 バイトだけを取得して行う。結果は `results[].status` に `committed` / `not_found` / `invalid_file_type` / `error` のいずれかで返る。
 
 ## floci に関する制約
 
