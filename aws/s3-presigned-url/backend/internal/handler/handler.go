@@ -25,7 +25,17 @@ import (
 
 const presignExpiry = 15 * time.Minute
 
-// pdfMagicNumber is the byte sequence every PDF file starts with.
+// maxUploadBytes and allowedContentType are enforced up front via the
+// pre-signed POST policy conditions (content-length-range / Content-Type),
+// so S3 itself rejects an oversized or wrong-type upload before the object
+// is even written to the tmp bucket.
+const maxUploadBytes = 500 * 1024 // 500KB
+const allowedContentType = "application/pdf"
+
+// pdfMagicNumber is the byte sequence every PDF file starts with. Commit
+// still checks this because the POST policy's Content-Type condition only
+// constrains the *declared* form field, which the client controls and can
+// lie about; this is the check against the actual file bytes.
 var pdfMagicNumber = []byte("%PDF-")
 
 type Handler struct {
@@ -44,8 +54,9 @@ type prepareRequest struct {
 }
 
 type prepareResponse struct {
-	UUID      string `json:"uuid"`
-	UploadURL string `json:"uploadUrl"`
+	UUID      string            `json:"uuid"`
+	UploadURL string            `json:"uploadUrl"`
+	Fields    map[string]string `json:"fields"`
 }
 
 func (h *Handler) Prepare(w http.ResponseWriter, r *http.Request) {
@@ -61,12 +72,18 @@ func (h *Handler) Prepare(w http.ResponseWriter, r *http.Request) {
 
 	id := uuid.NewString()
 
-	out, err := h.s3.Presign.PresignPutObject(r.Context(), &s3.PutObjectInput{
+	out, err := h.s3.Presign.PresignPostObject(r.Context(), &s3.PutObjectInput{
 		Bucket: aws.String(h.cfg.TmpBucket),
 		Key:    aws.String(id),
-	}, s3.WithPresignExpires(presignExpiry))
+	}, func(o *s3.PresignPostOptions) {
+		o.Expires = presignExpiry
+		o.Conditions = []any{
+			[]any{"content-length-range", 0, maxUploadBytes},
+			map[string]string{"Content-Type": allowedContentType},
+		}
+	})
 	if err != nil {
-		log.Printf("presign put object failed: %v", err)
+		log.Printf("presign post object failed: %v", err)
 		writeError(w, http.StatusInternalServerError, "failed to create upload URL")
 		return
 	}
@@ -74,6 +91,7 @@ func (h *Handler) Prepare(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, prepareResponse{
 		UUID:      id,
 		UploadURL: out.URL,
+		Fields:    out.Values,
 	})
 }
 

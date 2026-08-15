@@ -26,7 +26,7 @@ cat <<EOF >/tmp/cors.json
   "CORSRules": [
     {
       "AllowedOrigins": ["${ALLOWED_ORIGIN}"],
-      "AllowedMethods": ["PUT", "GET"],
+      "AllowedMethods": ["PUT", "POST", "GET"],
       "AllowedHeaders": ["*"],
       "ExposeHeaders": ["ETag"]
     }
@@ -34,8 +34,8 @@ cat <<EOF >/tmp/cors.json
 }
 EOF
 
-# The tmp bucket needs CORS so the browser can PUT directly to a presigned
-# URL from the frontend's origin. The store bucket gets the same rule so
+# The tmp bucket needs CORS so the browser can POST directly to a presigned
+# POST URL from the frontend's origin. The store bucket gets the same rule so
 # fetch-based downloads of presigned GET URLs would also work, even though
 # the file-list page currently only uses plain <a> navigation.
 aws s3api put-bucket-cors --bucket "${TMP_BUCKET}" --cors-configuration file:///tmp/cors.json --endpoint-url "${ENDPOINT}"

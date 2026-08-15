@@ -91,8 +91,8 @@ async function onFilesSelected(e: Event): Promise<void> {
 async function uploadOne(item: UploadItem, index: number, generation: number): Promise<void> {
   let updated: UploadItem;
   try {
-    const { uuid, uploadUrl } = await prepareUpload(item.file.name);
-    await uploadToPresignedUrl(uploadUrl, item.file);
+    const { uuid, uploadUrl, fields } = await prepareUpload(item.file.name);
+    await uploadToPresignedUrl(uploadUrl, fields, item.file);
     updated = { ...item, uuid, status: "done" };
   } catch (err) {
     updated = {
