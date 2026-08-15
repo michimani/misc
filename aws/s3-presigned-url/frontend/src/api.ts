@@ -3,6 +3,7 @@ const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? "http://localh
 export interface PrepareResponse {
   uuid: string;
   uploadUrl: string;
+  fields: Record<string, string>;
 }
 
 export interface CommitFileInput {
@@ -48,13 +49,30 @@ export function prepareUpload(fileName: string): Promise<PrepareResponse> {
   });
 }
 
-export async function uploadToPresignedUrl(uploadUrl: string, file: File): Promise<void> {
+export async function uploadToPresignedUrl(
+  uploadUrl: string,
+  fields: Record<string, string>,
+  file: File
+): Promise<void> {
+  const formData = new FormData();
+  for (const [key, value] of Object.entries(fields)) {
+    formData.append(key, value);
+  }
+  // The Content-Type field is matched against the pre-signed POST policy's
+  // condition (fixed to application/pdf), so the browser-detected MIME type
+  // is sent as-is instead of being overridden — a non-PDF selection should
+  // be rejected by S3 itself rather than silently coerced to pass.
+  formData.append("Content-Type", file.type);
+  // The file field must come last, per the S3 POST policy form requirements.
+  formData.append("file", file);
+
   const res = await fetch(uploadUrl, {
-    method: "PUT",
-    body: file,
+    method: "POST",
+    body: formData,
   });
   if (!res.ok) {
-    throw new Error(`upload failed: ${res.status} ${res.statusText}`);
+    const body = await res.text();
+    throw new Error(`upload failed: ${res.status} ${res.statusText} ${body}`);
   }
 }
 
