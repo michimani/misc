@@ -29,7 +29,7 @@ const presignExpiry = 15 * time.Minute
 // pre-signed POST policy conditions (content-length-range / Content-Type),
 // so S3 itself rejects an oversized or wrong-type upload before the object
 // is even written to the tmp bucket.
-const maxUploadBytes = 500 * 1024 // 500KB
+const maxUploadBytes = 500 * 1024 * 1024 // 500MB
 const allowedContentType = "application/pdf"
 
 // pdfMagicNumber is the byte sequence every PDF file starts with. Commit
