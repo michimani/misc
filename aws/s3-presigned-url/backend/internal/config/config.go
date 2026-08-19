@@ -29,7 +29,7 @@ func Load() (Config, error) {
 		AWSRegion:          getEnv("AWS_REGION", "us-east-1"),
 		TmpBucket:          os.Getenv("S3_TMP_BUCKET"),
 		StoreBucket:        os.Getenv("S3_STORE_BUCKET"),
-		AllowedOrigin:      getEnv("ALLOWED_ORIGIN", "http://localhost:5173"),
+		AllowedOrigin:      getEnv("ALLOWED_ORIGIN", "http://localhost:55174"),
 	}
 
 	var missing []string
