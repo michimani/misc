@@ -2,7 +2,7 @@ services:
   floci:
     image: floci/floci:latest
     ports:
-      - "4566:4566"
+      - "54566:4566"
 
   bucket-setup:
     image: amazon/aws-cli:2.36.23
@@ -16,25 +16,25 @@ services:
       S3_ENDPOINT: http://floci:4566
       S3_TMP_BUCKET: presigned-tmp
       S3_STORE_BUCKET: presigned-store
-      ALLOWED_ORIGIN: http://localhost:5174
+      ALLOWED_ORIGIN: http://localhost:55174
     volumes:
       - ./scripts:/scripts:ro
 
   backend:
     build: ./backend
     ports:
-      - "8080:8080"
+      - "58080:8080"
     depends_on:
       bucket-setup:
         condition: service_completed_successfully
     environment:
       PORT: 8080
       S3_INTERNAL_ENDPOINT: http://floci:4566
-      S3_PUBLIC_ENDPOINT: http://localhost:4566
+      S3_PUBLIC_ENDPOINT: http://localhost:54566
       AWS_REGION: us-east-1
       S3_TMP_BUCKET: presigned-tmp
       S3_STORE_BUCKET: presigned-store
-      ALLOWED_ORIGIN: http://localhost:5174
+      ALLOWED_ORIGIN: http://localhost:55174
       AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
     volumes:
@@ -43,11 +43,11 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "5174:5173"
+      - "55174:5173"
     depends_on:
       - backend
     environment:
-      VITE_API_BASE_URL: http://localhost:8080
+      VITE_API_BASE_URL: http://localhost:58080
     volumes:
       - ./frontend:/app
       - frontend_node_modules:/app/node_modules

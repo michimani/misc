@@ -12,21 +12,21 @@ Amazon S3 の Pre-signed URL の挙動を確認するためのプロトタイプ
 ```
 ┌────────────┐   POST /api/prepare    ┌─────────┐
 │  frontend  │ ─────────────────────▶ │ backend │
-│ (:5174)    │ ◀───────────────────── │ (:8080) │
+│ (:55174)   │ ◀───────────────────── │ (:58080)│
 └─────┬──────┘   { uuid, uploadUrl }  └────┬────┘
       │                                    │ internal S3 calls
       │ PUT (direct upload)                │ (Copy/Delete/List)
       ▼                                    ▼
 ┌─────────────────────────────────────────────────┐
-│                 floci (:4566)                    │
+│                 floci (:54566)                   │
 │   presigned-tmp/{uuid}  →  presigned-store/{uuid}/{fileName}
 └─────────────────────────────────────────────────┘
 ```
 
 Pre-signed URL はブラウザに渡されるため、backend は 2 つの S3 クライアントを使い分けている。
 
-- `S3_INTERNAL_ENDPOINT` (`http://floci:4566`) — docker-compose 内部からの Copy/Delete/List に使用
-- `S3_PUBLIC_ENDPOINT` (`http://localhost:4566`) — Pre-signed URL の署名対象ホストに使用（ブラウザから解決可能なアドレスである必要がある）
+- `S3_INTERNAL_ENDPOINT` (`http://floci:4566`) — docker-compose 内部からの Copy/Delete/List に使用（コンテナ間通信のためホスト公開ポートとは独立）
+- `S3_PUBLIC_ENDPOINT` (`http://localhost:54566`) — Pre-signed URL の署名対象ホストに使用（ブラウザから解決可能なアドレスである必要がある）
 
 ## 起動方法
 
@@ -34,7 +34,7 @@ Pre-signed URL はブラウザに渡されるため、backend は 2 つの S3 �
 
 1. VS Code でこのディレクトリ (`aws/s3-presigned-url`) を開き、"Reopen in Container" を実行する
 2. `docker compose up` 相当の処理が自動的に走り、floci / バケット作成 / backend / frontend が起動する
-3. ブラウザで http://localhost:5174 を開く
+3. ブラウザで http://localhost:55174 を開く
 
 ### devcontainer を使わず直接起動する場合
 
@@ -46,9 +46,11 @@ docker compose up --build
 
 | サービス | URL | 用途 |
 | --- | --- | --- |
-| frontend | http://localhost:5174 | アップロード / ファイル一覧 UI |
-| backend | http://localhost:8080 | API |
-| floci (S3) | http://localhost:4566 | S3 互換 API |
+| frontend | http://localhost:55174 | アップロード / ファイル一覧 UI |
+| backend | http://localhost:58080 | API |
+| floci (S3) | http://localhost:54566 | S3 互換 API |
+
+ホストマシン上で他プロセスとポートが競合しないよう、ポートは一般的に使われにくい番号（49152–65535 の動的/私用ポート範囲）を割り当てている。
 
 停止する場合は `docker compose down`。
 
