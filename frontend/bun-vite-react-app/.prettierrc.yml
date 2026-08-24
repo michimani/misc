@@ -4,3 +4,5 @@ trailingComma: 'none'
 semi: false
 useTabs: false
 importOrder: ['^react', "^@?\\w", '^[./]']
+plugins:
+  - '@trivago/prettier-plugin-sort-imports'
