@@ -7,6 +7,8 @@ misc
   - [evaluate-feature-vs-batch-evaluate-feature](./aws/evidently/evaluate-feature-vs-batch-evaluate-feature/)
 - Prototype to check the behavior of S3 pre-signed URLs, emulated locally with floci.
   - [s3-presigned-url](./aws/s3-presigned-url/)
+- Bulk-delete IAM Users along with all of their dependent resources.
+  - [delete-iam-users](./aws/delete-iam-users/)
 
 ## Backend
 
